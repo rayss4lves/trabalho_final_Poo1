@@ -142,38 +142,38 @@ class GerenciarDoramas():
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
             
-            while True:
-                try:
-                    nome = input('Nome do dorama: ').capitalize().strip()
-                    if not nome: 
-                        print('Nome invalido! Tente novamente.')
-                        continue
-                    total_eps = int(input('Total de episodios: '))
-                    if not total_eps:
-                        print('Total de episodios invalido! Tente novamente.')
-                        continue
-                    nota = float(input('Nota do dorama: '))
-                    if not nota:
-                        print('Nota invalida! Tente novamente.')
-                        continue
-                    emissora = input('Emissora do dorama: ').capitalize().strip()
-                    if not emissora:
-                        print('Emissora invalida! Tente novamente.')
-                        continue
-                    count = int(input('Quantas categorias tem o dorama: '))
-                    if not count:
-                        print('Quantidade de categorias invalida! Tente novamente.')
-                        continue
-                    for i in range(count):
-                        categorias = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
-                        if not self.validar_categorias(categorias):
-                            print('Categoria invalida! Tente Novamente.')
-                            continue
+            nome = input('Nome do dorama: ').capitalize().strip()
+            if not nome: 
+                print('Nome invalido! Tente novamente.')
+                nome = input('Nome do dorama: ').capitalize().strip()
+                
+            total_eps = int(input('Total de episodios: '))
+            if not total_eps:
+                print('Total de episodios invalido! Tente novamente.')
+                total_eps = int(input('Total de episodios: '))
+                
+            nota = float(input('Nota do dorama: '))
+            if not nota:
+                print('Nota invalida! Tente novamente.')
+                nota = float(input('Nota do dorama: '))
+                
+            emissora = input('Emissora do dorama: ').capitalize().strip()
+            if not emissora:
+                print('Emissora invalida! Tente novamente.')
+                emissora = input('Emissora do dorama: ').capitalize().strip()
+                
+            count = int(input('Quantas categorias tem o dorama: '))
+            if not count:
+                print('Quantidade de categorias invalida! Tente novamente.')
+                count = int(input('Quantas categorias tem o dorama: '))
+                
+            for i in range(count):
+                categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                if not categoria:
+                    print('Categoria invalida! Tente Novamente.')
+                    categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                categorias.append(categoria)
                         
-                    
-                except ValueError:
-                    print('Valores invalidos! Tente novamente.')
-                break
             if nome in self._doramas_favoritos:
                         print(f'Dorama {nome} ja existe na lista de favoritos!')
             else:
@@ -193,9 +193,10 @@ class GerenciarDoramas():
                 print(f'{dados.emissora}')
                 for dado in dados.categorias:
                     print(f'{dado}')
-                print('------')
+                print('------------------------')
         else:
-            print('Nao existem doramas favoritas!\n')        
+            print('Nao existem doramas favoritas!\n')
+        print('==============================================')        
                         
     def remover_doramas_favoritos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
@@ -274,7 +275,10 @@ class GerenciarDoramas():
     def pesquisar_doramas_favoritos(self):
         
         dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
-        
+        if not dorama_pesquisar:
+            print('Nome invalido! Tente novamente.')
+            dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
+            
         if dorama_pesquisar in self._doramas_favoritos:
             dados = self._doramas_favoritos[dorama_pesquisar]
             print(f'{dados.nome}')
@@ -292,36 +296,38 @@ class GerenciarDoramas():
     def adicionar_doramas_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
-            while True:
-                try:
-                    nome = input('Nome do dorama: ').capitalize().strip()
-                    if not nome: 
-                        print('Nome invalido! Tente novamente.')
-                        continue
-                    total_eps = int(input('Total de episodios: '))
-                    if not total_eps:
-                        print('Total de episodios invalido! Tente novamente.')
-                        continue
-                    nota = float(input('Nota do dorama: '))
-                    if not nota:
-                        print('Nota invalida! Tente novamente.')
-                        continue
-                    emissora = input('Emissora do dorama: ').capitalize().strip()
-                    if not emissora:
-                        print('Emissora invalida! Tente novamente.')
-                        continue
-                    count = int(input('Quantas categorias tem o dorama: '))
-                    if not count:
-                        print('Quantidade de categorias invalida! Tente novamente.')
-                        continue
-                    for i in range(count):
-                        categorias = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
-                        if not self.validar_categorias(categorias):
-                            print('Categoria invalida! Tente Novamente.')
-                            continue
-                except ValueError:
-                    print('Valores invalidos! Tente novamente.')
-                break
+            nome = input('Nome do dorama: ').capitalize().strip()
+            if not nome: 
+                print('Nome invalido! Tente novamente.')
+                nome = input('Nome do dorama: ').capitalize().strip()
+                
+            total_eps = int(input('Total de episodios: '))
+            if not total_eps:
+                print('Total de episodios invalido! Tente novamente.')
+                total_eps = int(input('Total de episodios: '))
+                
+            nota = float(input('Nota do dorama: '))
+            if not nota:
+                print('Nota invalida! Tente novamente.')
+                nota = float(input('Nota do dorama: '))
+                
+            emissora = input('Emissora do dorama: ').capitalize().strip()
+            if not emissora:
+                print('Emissora invalida! Tente novamente.')
+                emissora = input('Emissora do dorama: ').capitalize().strip()
+                
+            count = int(input('Quantas categorias tem o dorama: '))
+            if not count:
+                print('Quantidade de categorias invalida! Tente novamente.')
+                count = int(input('Quantas categorias tem o dorama: '))
+                
+            for i in range(count):
+                categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                if not categoria:
+                    print('Categoria invalida! Tente Novamente.')
+                    categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                categorias.append(categoria)
+                
             if nome in self._doramas_assistidos:
                 print(f'Dorama {nome} ja existe na lista de favoritos!')
             else:
@@ -420,7 +426,10 @@ class GerenciarDoramas():
     def pesquisar_doramas_assistidos(self):
         
         dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
-        
+        if not dorama_pesquisar:
+            print('Nome invalido! Tente novamente.')
+            dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
+            
         if dorama_pesquisar in self._doramas_assistidos:
             dados = self._doramas_assistidos[dorama_pesquisar]
             print(f'{dados.nome.capitalize()}')
@@ -437,6 +446,10 @@ class GerenciarDoramas():
    
     def favoritar_doramas_assitidos(self):
         dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
+        if not dorama_nome:
+            print('Você nao possui permissao para favoritar doramas!')
+            dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
+            
         if dorama_nome in self._doramas_assistidos:
             self._doramas_favoritos[dorama_nome] = self._doramas_assistidos[dorama_nome]
             del self._doramas_assistidos[dorama_nome]
@@ -450,36 +463,37 @@ class GerenciarDoramas():
     def adicionar_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
-            while True:
-                try:
-                    nome = input('Nome do dorama: ').capitalize().strip()
-                    if not nome: 
-                        print('Nome invalido! Tente novamente.')
-                        continue
-                    total_eps = int(input('Total de episodios: '))
-                    if not total_eps:
-                        print('Total de episodios invalido! Tente novamente.')
-                        continue
-                    nota = float(input('Nota do dorama: '))
-                    if not nota:
-                        print('Nota invalida! Tente novamente.')
-                        continue
-                    emissora = input('Emissora do dorama: ').capitalize().strip()
-                    if not emissora:
-                        print('Emissora invalida! Tente novamente.')
-                        continue
-                    count = int(input('Quantas categorias tem o dorama: '))
-                    if not count:
-                        print('Quantidade de categorias invalida! Tente novamente.')
-                        continue
-                    for i in range(count):
-                        categorias = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
-                        if not self.validar_categorias(categorias):
-                            print('Categoria invalida! Tente Novamente.')
-                            continue
-                except ValueError:
-                    print('Valores invalidos! Tente novamente.')
-                break
+            nome = input('Nome do dorama: ').capitalize().strip()
+            if not nome: 
+                print('Nome invalido! Tente novamente.')
+                nome = input('Nome do dorama: ').capitalize().strip()
+                
+            total_eps = int(input('Total de episodios: '))
+            if not total_eps:
+                print('Total de episodios invalido! Tente novamente.')
+                total_eps = int(input('Total de episodios: '))
+                
+            nota = float(input('Nota do dorama: '))
+            if not nota:
+                print('Nota invalida! Tente novamente.')
+                nota = float(input('Nota do dorama: '))
+                
+            emissora = input('Emissora do dorama: ').capitalize().strip()
+            if not emissora:
+                print('Emissora invalida! Tente novamente.')
+                emissora = input('Emissora do dorama: ').capitalize().strip()
+                
+            count = int(input('Quantas categorias tem o dorama: '))
+            if not count:
+                print('Quantidade de categorias invalida! Tente novamente.')
+                count = int(input('Quantas categorias tem o dorama: '))
+                
+            for i in range(count):
+                categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                if not categoria:
+                    print('Categoria invalida! Tente Novamente.')
+                    categoria = input(f'Digite a categoria {i+1}: ').capitalize().strip() 
+                categorias.append(categoria)
             
             if nome in self._doramas_nao_assistidos:
                 print(f'Dorama {nome} ja existe na lista de favoritos!')
@@ -510,15 +524,15 @@ class GerenciarDoramas():
                 try:
                     dorama_nome = input(f'Informe o nome do Dorama que deseja remover: ').capitalize().strip()
                     if dorama_nome not in self._doramas_nao_assistidos:
-                        print(f'Dorama {dorama_nome} nao encontrado!')
+                        print('nOme inavalido!')
+                        dorama_nome = input(f'Informe o nome do Dorama que deseja remover: ').capitalize().strip()
                         continue
-                    del self._doramas_nao_assistidos[dorama_nome]
-                    print('Doramas removidas com sucesso!\n')
                     break
                 except ValueError:
                     print('Valor invalido! Tente novamente.')
-            
-            
+            print(f'Dorama {dorama_nome} nao encontrado!')
+            del self._doramas_nao_assistidos[dorama_nome]
+            print('Doramas removidas com sucesso!\n')
             if dorama_nome in self._doramas_nao_assistidos:
                 del self._doramas_nao_assistidos[dorama_nome]
                 print('Dorama removido com sucesso!\n')
@@ -607,6 +621,10 @@ class GerenciarDoramas():
     def assistir_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             dorama_nome = input('Informe o nome do dorama que deseja confirmar que assistiu: ').capitalize().strip()
+            if not dorama_nome:
+                print('Nome invalido! Tente novamente.')
+                dorama_nome = input('Informe o nome do dorama que deseja confirmar que assistiu: ').capitalize().strip()
+            
             if dorama_nome in self._doramas_nao_assistidos:
                 self._doramas_assistidos[dorama_nome] = self._doramas_nao_assistidos[dorama_nome]
                 del self._doramas_nao_assistidos[dorama_nome]
@@ -619,6 +637,10 @@ class GerenciarDoramas():
     def favoritar_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
+            if not dorama_nome:
+                print('Nome invalido! Tente novamente.')
+                dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
+                
             if dorama_nome in self._doramas_nao_assistidos:
                 self._doramas_favoritos[dorama_nome] = self._doramas_nao_assistidos[dorama_nome]
                 del self._doramas_nao_assistidos[dorama_nome]
@@ -773,23 +795,21 @@ class Sistema:
         self._usuario_atual = None  
 
     def cadastrar_usuario(self):
-        while True:
-            try:
-                usuario_nome = input('Nome do usuario: ').strip().capitalize()
-                if not usuario_nome:
-                    print('Nome do usuario invalido!\n')
-                    continue
-                usuario_cpf = input('CPF do usuario: ').strip().upper()
-                if not usuario_cpf:
-                    print('CPF invalido!\n')
-                    continue
-                usuario_senha = input('Senha do usuario: ').strip().upper()
-                if not usuario_senha:
-                    print('Senha invalida!\n')
-                    continue
-            except ValueError:
-                print('Formato invalido!\n')
-            break
+        usuario_nome = input('Nome do usuario: ').strip().capitalize()
+        if not usuario_nome:
+            print('Nome do usuario invalido!\n')
+            usuario_nome = input('Nome do usuario: ').strip().capitalize()
+            
+        usuario_cpf = input('CPF do usuario: ').strip().upper()
+        if not usuario_cpf:
+            print('CPF invalido!\n')
+            usuario_cpf = input('CPF do usuario: ').strip().upper()
+            
+        usuario_senha = input('Senha do usuario: ').strip().upper()
+        if not usuario_senha:
+            print('Senha invalida!\n')
+            usuario_senha = input('Senha do usuario: ').strip().upper()
+            
         if usuario_cpf in self._usuarios:
             print('Usuario ja cadastrado!\n')
         else:
@@ -805,23 +825,21 @@ class Sistema:
             print('---------------------------\n')
 
     def login(self):
-        while True:
-            try:
-                usuario_nome = input('Nome do usuario: ').strip().capitalize()
-                if not usuario_nome:
-                    print('Nome do usuario invalido!\n')
-                    continue
-                usuario_cpf = input('CPF do usuario: ').strip().upper()
-                if not usuario_cpf:
-                    print('CPF invalido!\n')
-                    continue
-                usuario_senha = input('Senha do usuario: ').strip().upper()
-                if not usuario_senha:
-                    print('Senha invalida!\n')
-                    continue
-            except ValueError:
-                print('Formato invalido!\n')
-            break
+        usuario_nome = input('Nome do usuario: ').strip().capitalize()
+        if not usuario_nome:
+            print('Nome do usuario invalido!\n')
+            usuario_nome = input('Nome do usuario: ').strip().capitalize()
+            
+        usuario_cpf = input('CPF do usuario: ').strip().upper()
+        if not usuario_cpf:
+            print('CPF invalido!\n')
+            usuario_cpf = input('CPF do usuario: ').strip().upper()
+            
+        usuario_senha = input('Senha do usuario: ').strip().upper()
+        if not usuario_senha:
+            print('Senha invalida!\n')
+            usuario_senha = input('Senha do usuario: ').strip().upper()
+
         if usuario_nome in self._usuarios:
             usuario = self._usuarios[usuario_nome]
             if usuario.cpf == usuario_cpf:
