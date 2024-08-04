@@ -52,7 +52,7 @@ class ControleAutenticacao():
         if isinstance(usuario, IUsuario):
             return usuario.autenticacao(senha)
         else:
-            return False, 'Usuario informado não tem permissão de login!'
+            return False, 'Usuario informado nao tem permissao de login!'
         
  
  
@@ -148,14 +148,14 @@ class GerenciarDoramas():
         
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
-            nome = input('Nome do dorama: ')
+            nome = input('Nome do dorama: ').capitalize().strip()
             total_eps = int(input('Total de episodios: '))
             nota = float(input('Nota do dorama: '))
-            emissora = input('Emissora do dorama: ')
+            emissora = input('Emissora do dorama: ').capitalize().strip()
             count = int(input('Quantas categorias tem o dorama: '))
             
             for i in range(count):
-                categorias.append(input(f'Digite a categoria {i+1}: '))
+                categorias.append(input(f'Digite a categoria {i+1}: ').capitalize().strip())
                 
             if nome in self._doramas_favoritos:
                 print(f'Dorama {nome} ja existe na lista de favoritos!')
@@ -164,17 +164,25 @@ class GerenciarDoramas():
                 self._doramas_favoritos[nome] = novo_dorama
                 print(f'Dorama {nome} adicionado aos favoritos.')
         else:
-            print('Você não possui permissão para adicionar doramas favoritas!')    
+            print('Você nao possui permissao para adicionar doramas favoritas!')    
         print('\n----------------------------------------\n')
                 
     def listar_doramas_favoritos(self):
-        for nome, dados in self._doramas_favoritos.items():
-            print(f'{nome.capitalize()}: {dados}')
-            print('------')
-            
+        if self._doramas_favoritos:
+            for nome, dados in self._doramas_favoritos.items():
+                print(f'{nome.capitalize()}')
+                print(f'{dados.total_eps}')
+                print(f'{dados.nota}')
+                print(f'{dados.emissora}')
+                for dado in dados.categorias:
+                    print(f'{dado}')
+                print('------')
+        else:
+            print('Nao existem doramas favoritas!\n')        
+                        
     def remover_doramas_favoritos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            dorama_nome = input('Dorama que voce deseja remover: ')
+            dorama_nome = input('Dorama que voce deseja remover: ').capitalize().strip()
             
             if dorama_nome in self._doramas_favoritos:
                 dorama = self._doramas_favoritos[dorama_nome]
@@ -182,63 +190,76 @@ class GerenciarDoramas():
                 del self._doramas_favoritos[dorama_nome]
                 print('Dorama removido com sucesso!\n')
             else:
-                print(f'Dorama {dorama_nome} não encontrada!\n')
+                print(f'Dorama {dorama_nome} nao encontrada!\n')
         else:
-            print('Você não possui permissão para remover doramas!')
+            print('Você nao possui permissao para remover doramas!')
         print('\n----------------------------------------\n')    
                 
     def atualizar_doramas_favoritos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            nome = input('Informe o dorama que deseja atualizar: ')
+            nome = input('Informe o dorama que deseja atualizar: ').capitalize().strip()
             if nome in self._doramas_favoritos:
-                op = input('Informe o que deseja atualizar: ')
+                
                 print('1 - atualizar nome:')
                 print('2 - atualizar total de epsodios:')
                 print('3 - atualizar nota:')
                 print('4 - atualizar emissora:')
                 print('5 - atualizar categoria:')
+                op = input('Informe o que deseja atualizar: ')
                 dorama =  self._doramas_favoritos[nome]
 
                 if op == '1':
-                    novo_nome = input('Informe o novo nome do dorama: ')
+                    novo_nome = input('Informe o novo nome do dorama: ').capitalize().strip()
                     if novo_nome:
                         dorama.atualizar_dorama(nome=novo_nome)
+                        self._doramas_favoritos[novo_nome] = self._doramas_favoritos.pop(nome)
+                        print(f'Dorama {nome} atualizado com sucesso!')
                         
                 elif op == '2':
                     novo_total_eps = int(input('Informe o novo total de episodios: '))
                     if novo_total_eps:
                         dorama.atualizar_dorama(total_eps = novo_total_eps)
+                        print(f'Dorama {nome} atualizado com sucesso!')
                 
                 elif op == '3':
                     novo_nota = float(input('Informe a nova nota do dorama: '))
                     if novo_nota:
                         dorama.atualizar_dorama(nota = novo_nota)
+                        print(f'Dorama {nome} atualizado com sucesso!')
                         
                 elif op == '4':
-                    novo_emissora = input('Informe a nova emissora do dorama: ')
+                    novo_emissora = input('Informe a nova emissora do dorama: ').capitalize().strip()
                     if novo_emissora:
                         dorama.atualizar_dorama(emissora = novo_emissora)
+                        print(f'Dorama {nome} atualizado com sucesso!')
                 elif op == '5':
-                    antiga_categoria = input('Antiga categoria do dorama: ')
-                    nova_categoria = input('Informe a nova emissora do dorama: ')
-                    for i in range(len(dorama.categoria)):
-                        if antiga_categoria == dorama.categoria[i]:
-                            dorama.categoria[i] = nova_categoria
+                    antiga_categoria = input('Antiga categoria do dorama: ').capitalize().strip()
+                    nova_categoria = input('Informe a nova emissora do dorama: ').capitalize().strip()
+                    for i in range(len(dorama.categorias)):
+                        if antiga_categoria == dorama.categorias[i]:
+                            dorama.categorias[i] = nova_categoria
                             break
+                    print(f'Dorama {nome} atualizado com sucesso!')
                 else:
-                    print('Opção invalida!\n')
+                    print('Opçao invalida!\n')
         else:
-            print('Você não possui permissão para atualizar doramas!')
+            print('Você nao possui permissao para atualizar doramas!')
         print('\n----------------------------------------\n')
         
     def pesquisar_doramas_favoritos(self):
         
-        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ')
+        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
         
         if dorama_pesquisar in self._doramas_favoritos:
             dados = self._doramas_favoritos[dorama_pesquisar]
-            for chave, valor in dados.items():
-                print(f'{chave.capitalize()}: {valor}')
+            print(f'{dados.nome}')
+            print(f'{dados.total_eps}')
+            print(f'{dados.nota}')
+            print(f'{dados.emissora}')
+            for dado in dados.categorias:
+                print(f'{dado}')
+        else:
+            print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
  
             
@@ -248,14 +269,14 @@ class GerenciarDoramas():
     def adicionar_doramas_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
-            nome = input('Nome do dorama: ')
+            nome = input('Nome do dorama: ').strip().capitalize()
             total_eps = int(input('Total de episodios: '))
             nota = float(input('Nota do dorama: '))
-            emissora = input('Emissora do dorama: ')
+            emissora = input('Emissora do dorama: ').strip().capitalize()
             count = int(input('Quantas categorias tem o dorama: '))
             
             for i in range(count):
-                categorias.append(input(f'Digite a categoria {i+1}: '))
+                categorias.append(input(f'Digite a categoria {i+1}: ').capitalize().strip())
             
             if nome in self._doramas_assistidos:
                 print(f'Dorama {nome} ja existe na lista de favoritos!')
@@ -264,109 +285,129 @@ class GerenciarDoramas():
                 self._doramas_assistidos[nome] = novo_dorama
                 print(f'Dorama {nome} adicionado aos assistidos.\n')
         else:
-            print('Você não possui permissão para adicionar doramas assistidos!')
+            print('Você nao possui permissao para adicionar doramas assistidos!')
         print('\n----------------------------------------\n')
         
     def listar_doramas_assistidos(self):
-         for nome, dados in self._doramas_assistidos.items():
-            print(f'{nome.capitalize()}: {dados.capitalize()}')
-            print('------')   
+        if self._doramas_assistidos:
+            for nome, dados in self._doramas_assistidos.items():
+                print(f'{nome.capitalize()}')
+                print(f'{dados.total_eps}')
+                print(f'{dados.nota}')
+                print(f'{dados.emissora}')
+                for dado in dados.categorias:
+                    print(f'{dado}')
+                print('------')   
+        else:
+            print('Nenhuma dorama foi adicionada aos assistidos.\n')
     
     def remover_doramas_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            dorama_nome = input('Dorama que voce deseja remover: ')
+            dorama_nome = input('Dorama que voce deseja remover: ').capitalize().strip()
             
             if dorama_nome in self._doramas_assistidos:
                 del self._doramas_assistidos[dorama_nome]
                 print('Dorama removido com sucesso!\n')
             else:
-                print(f'Dorama {dorama_nome} não encontrada!\n')
+                print(f'Dorama {dorama_nome} nao encontrada!\n')
         else:
-            print('Você não possui permissão para remover doramas!')
+            print('Você nao possui permissao para remover doramas!')
         print('\n----------------------------------------\n')
             
     def atualizar_doramas_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            nome = input('Informe o dorama que deseja atualizar: ')
-            if nome in self._doramas_assistidos:
-                op = input('Informe o que deseja atualizar: ')
+            nome = input('Informe o dorama que deseja atualizar: ').capitalize().strip()
+            if nome in self._doramas_assistidos:   
                 print('1 - atualizar nome:')
                 print('2 - atualizar total de epsodios:')
                 print('3 - atualizar nota:')
                 print('4 - atualizar emissora:')
                 print('5 - atualizar categoria:')
+                op = input('Informe o que deseja atualizar: ')
                 dorama =  self._doramas_assistidos[nome]
                 if op == '1':
-                    novo_nome = input('Informe o dorama que deseja atualizar: ')
+                    novo_nome = input('Informe o dorama que deseja atualizar: ').capitalize().strip()
                     if novo_nome:
                         dorama.atualizar_dorama(nome = novo_nome)
-                        
+                        self._doramas_assistidos[novo_nome] = self._doramas_assistidos.pop(nome)
+                    print(f'Dorama {nome} atualizado com sucesso!')
+                       
                 elif op == '2':
                     novo_total_eps = int(input('Informe o novo total de episodios: '))
                     if novo_total_eps:
                         dorama.atualizar_dorama(total_eps = novo_total_eps)
-                
+                    print(f'Dorama {nome} atualizado com sucesso!')
+                    
                 elif op == '3':
                     novo_nota = float(input('Informe a nova nota do dorama: '))
                     if novo_nota:
                         dorama.atualizar_dorama(nota = novo_nota)
+                    print(f'Dorama {nome} atualizado com sucesso!')
                         
                 elif op == '4':
-                    novo_emissora = input('Informe a nova emissora do dorama: ')
+                    novo_emissora = input('Informe a nova emissora do dorama: ').capitalize().strip()
                     if novo_emissora:
                         dorama.atualizar_dorama(emissora = novo_emissora)
+                    print(f'Dorama {nome} atualizado com sucesso!')
                 elif op == '5':
-                    antiga_categoria = input('Antiga categoria do dorama: ')
-                    nova_categoria = input('Informe a nova emissora do dorama: ')
-                    for i in range(len(dorama.categoria)):
-                        if antiga_categoria == dorama.categoria[i]:
-                            dorama.categoria[i] = nova_categoria
+                    antiga_categoria = input('Antiga categoria do dorama: ').capitalize().strip()
+                    nova_categoria = input('Informe a nova emissora do dorama: ').capitalize().strip()
+                    for i in range(len(dorama.categorias)):
+                        if antiga_categoria == dorama.categorias[i]:
+                            dorama.categorias[i] = nova_categoria
                             break
+                    print(f'Dorama {nome} atualizado com sucesso!')
+                    
                 else:
-                    print('Opção invalida!\n')
+                    print('Opçao invalida!\n')
         else:
-            print('Você não possui permissão para atualizar doramas!')  
+            print('Você nao possui permissao para atualizar doramas!')  
         print('\n----------------------------------------\n') 
     
-    def pesquisar_doramas(self):
+    def pesquisar_doramas_assistidos(self):
         
-        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ')
+        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
         
         if dorama_pesquisar in self._doramas_assistidos:
             dados = self._doramas_assistidos[dorama_pesquisar]
-            for chave, valor in dados.items():
-                print(f'{chave.capitalize()}: {valor}')
+            print(f'{dados.nome.capitalize()}')
+            print(f'{dados.total_eps}')
+            print(f'{dados.nota}')
+            print(f'{dados.emissora}')
+            for dado in dados.categorias:
+                print(f'{dado}')
             print('------')
         else:
-            print(f'Dorama {dorama_pesquisar} não foi encontrada na lista!')
+            print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
                     
    
-    def favoritar_dorama_assitidos(self):
-        dorama_nome = input('Informe o nome do dorama que deseja favoritar: ')
+    def favoritar_doramas_assitidos(self):
+        dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
         if dorama_nome in self._doramas_assistidos:
             self._doramas_favoritos[dorama_nome] = self._doramas_assistidos[dorama_nome]
             del self._doramas_assistidos[dorama_nome]
+            print(f'Dorama {dorama_nome} favoritado com sucesso!')
         else:
-            print(f'Dorama {dorama_nome} não foi encontrada na lista!')
+            print(f'Dorama {dorama_nome} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
 
         
-        
+########colocar .strip().upper() e .capitalize() nos inputs      
 
 ###############################################DORAMAS NAO ASSISTIDOS###################################################
  
     def adicionar_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
             categorias = []
-            nome = input('Nome do dorama: ')
+            nome = input('Nome do dorama: ').strip().capitalize()
             total_eps = int(input('Total de episodios: '))
             nota = float(input('Nota do dorama: '))
-            emissora = input('Emissora do dorama: ')
+            emissora = input('Emissora do dorama: ').strip().capitalize()
             count = int(input('Quantas categorias tem o dorama: '))
             
             for i in range(count):
-                categorias.append(input(f'Digite a categoria {i+1}: '))
+                categorias.append(input(f'Digite a categoria {i+1}: ').strip().capitalize)
             
             if nome in self._doramas_nao_assistidos:
                 print(f'Dorama {nome} ja existe na lista de favoritos!')
@@ -375,30 +416,38 @@ class GerenciarDoramas():
                 self._doramas_nao_assistidos[nome] = novo_dorama
                 print(f'Dorama {nome} adicionado aos assistidos.\n')
         else:
-            print('Você não possui permissão para adicionar doramas!')
+            print('Você nao possui permissao para adicionar doramas!')
         print('\n----------------------------------------\n')
         
     def listar_doramas_nao_assistidos(self):
-         for nome, dados in self._doramas_nao_assistidos.items():
-            print(f'{nome.capitalize()}: {dados}')
-            print('------')   
+        if self._doramas_nao_assistidos:
+            for nome, dados in self._doramas_nao_assistidos.items():
+                print(f'{nome.capitalize()}')
+                print(f'{dados.total_eps}')
+                print(f'{dados.nota}')
+                print(f'{dados.emissora}')
+                for dado in dados.categorias:
+                    print(f'{dado}')
+                print('------')  
+        else:
+            print('Nao existem doramas nao assistidos!')  
     
-    def remover_dorama_nao_assistido(self):
+    def remover_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            dorama_nome = input('Dorama que voce deseja remover: ')
+            dorama_nome = input('Dorama que voce deseja remover: ').capitalize().strip()
             
             if dorama_nome in self._doramas_nao_assistidos:
                 del self._doramas_nao_assistidos[dorama_nome]
                 print('Dorama removido com sucesso!\n')
             else:
-                print(f'Dorama {dorama_nome} não encontrada!\n')
+                print(f'Dorama {dorama_nome} nao encontrada!\n')
         else:
-            print('Você não possui permissão para remover doramas!')
+            print('Você nao possui permissao para remover doramas!')
         print('\n----------------------------------------\n')
             
     def atualizar_doramas_nao_assistidos(self):
         if isinstance(self._usuario_atual, UsuarioPrimario):
-            nome = input('Informe o dorama que deseja atualizar: ')
+            nome = input('Informe o dorama que deseja atualizar: ').capitalize().strip()
             if nome in self._doramas_nao_assistidos:
                 
                 print('1 - atualizar nome:')
@@ -409,98 +458,112 @@ class GerenciarDoramas():
                 op = input('Informe o que deseja atualizar: ')
                 dorama =  self._doramas_nao_assistidos[nome]
                 if op == '1':
-                    novo_nome = input('Informe o dorama que deseja atualizar: ')
+                    novo_nome = input('Informe o dorama que deseja atualizar: ').capitalize().strip()
                     if novo_nome:
                         dorama.atualizar_dorama(nome = novo_nome)
-                        
+                        self._doramas_nao_assistidos[novo_nome] = self._doramas_nao_assistidos.pop(nome) 
+                    print(f'Dorama {nome} atualizado com sucesso!') 
+                       
                 elif op == '2':
                     novo_total_eps = int(input('Informe o novo total de episodios: '))
                     if novo_total_eps:
                         dorama.atualizar_dorama(total_eps = novo_total_eps)
-                
+                    print(f'Dorama {nome} atualizado com sucesso!')
+                    
                 elif op == '3':
                     novo_nota = float(input('Informe a nova nota do dorama: '))
                     if novo_nota:
                         dorama.atualizar_dorama(nota = novo_nota)
+                    print(f'Dorama {nome} atualizado com sucesso!')
                         
                 elif op == '4':
-                    novo_emissora = input('Informe a nova emissora do dorama: ')
+                    novo_emissora = input('Informe a nova emissora do dorama: ').capitalize().strip()
                     if novo_emissora:
                         dorama.atualizar_dorama(emissora = novo_emissora)
+                    print(f'Dorama {nome} atualizado com sucesso!')
+                    
                 elif op == '5':
-                    antiga_categoria = input('Antiga categoria do dorama: ')
-                    nova_categoria = input('Informe a nova emissora do dorama: ')
-                    for i in range(len(dorama.categoria)):
-                        if antiga_categoria == dorama.categoria[i]:
-                            dorama.categoria[i] = nova_categoria
+                    antiga_categoria = input('Antiga categoria do dorama: ').capitalize().strip()
+                    nova_categoria = input('Informe a nova emissora do dorama: ').capitalize().strip()
+                    for i in range(len(dorama.categorias)):
+                        if antiga_categoria == dorama.categorias[i]:
+                            dorama.categorias[i] = nova_categoria
                             break
+                    print(f'Dorama {nome} atualizado com sucesso!')
                         
                 else:
-                    print('Opção invalida!\n')
+                    print('Opçao invalida!\n')
         else:
-            print('Você não possui permissão para atualizar doramas!')
+            print('Você nao possui permissao para atualizar doramas!')
         print('\n----------------------------------------\n')
             
     def pesquisar_doramas_nao_assistidos(self):
         
-        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ')
+        dorama_pesquisar = input('Informe o nome do dorama que deseja pesquisar: ').capitalize().strip()
         
-        if dorama_pesquisar in self._doramas_favoritos:
-            dados = self._doramas_favoritos[dorama_pesquisar]
-            for chave, valor in dados.items():
-                print(f'{chave.capitalize()}: {valor}')
+        if dorama_pesquisar in self._doramas_nao_assistidos:
+            dados = self._doramas_nao_assistidos[dorama_pesquisar]
+            print(f'{dados.nome}')
+            print(f'{dados.total_eps}')
+            print(f'{dados.nota}')
+            print(f'{dados.emissora}')
+            for dado in dados.categorias:
+                print(f'{dado}')
             print('------')
         else:
-            print(f'Dorama {dorama_pesquisar} não foi encontrada na lista!')
+            print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
             
-    def assistir_dorama(self):
-        dorama_nome = input('Informe o nome do dorama que deseja confirmar que assistiu: ')
+    def assistir_doramas_nao_assistidos(self):
+        dorama_nome = input('Informe o nome do dorama que deseja confirmar que assistiu: ').capitalize().strip()
         if dorama_nome in self._doramas_nao_assistidos:
             self._doramas_assistidos[dorama_nome] = self._doramas_nao_assistidos[dorama_nome]
             del self._doramas_nao_assistidos[dorama_nome]
         else:
-            print(f'Dorama {dorama_nome} não foi encontrada na lista!')
+            print(f'Dorama {dorama_nome} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
 
-    def favoritar_dorama_nao_assistidos(self):
-        dorama_nome = input('Informe o nome do dorama que deseja favoritar: ')
+    def favoritar_doramas_nao_assistidos(self):
+        dorama_nome = input('Informe o nome do dorama que deseja favoritar: ').capitalize().strip()
         if dorama_nome in self._doramas_nao_assistidos:
             self._doramas_favoritos[dorama_nome] = self._doramas_nao_assistidos[dorama_nome]
             del self._doramas_nao_assistidos[dorama_nome]
+            print(f'Dorama {dorama_nome} favoritado com sucesso!')
         else:
-            print(f'Dorama {dorama_nome} não foi encontrada na lista!')
+            print(f'Dorama {dorama_nome} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
 
 
 ##########################################MENU GERENCIAR DORAMAS FAVORITOS###############################################
 
     def menu_favoritos(self):
-        while True:
-            print('\n----------------------------------\n')
-            print('1 - Adicionar doramas')
-            print('2 - Listar doramas')
-            print('3 - Remover dorama')
-            print('4 - Pesquisar dorama')
-            print('5 - Atualizar dorama')
-            print('0 - Voltar ao menu gerenciador de doramas')
-            print('\n----------------------------------\n')
-            opcao = input('Escolha uma opção: ')
-            
-            if opcao == '1':
-                self.adicionar_doramas_favoritos()
-            elif opcao == '2':
-                self.listar_doramas_favoritos()
-            elif opcao == '3':
-                self.remover_doramas_favoritos()
-            elif opcao == '4':
-                self.pesquisar_doramas_favoritos()
-            elif opcao == '5':
-                self.atualizar_doramas_favoritos()
-            else:
-                print('Voltando para o menu gerenciador de doramas...')
-                break
-    
+        try:
+            while True:
+                print('\n----------------------------------\n')
+                print('1 - Adicionar doramas')
+                print('2 - Listar doramas')
+                print('3 - Remover dorama')
+                print('4 - Pesquisar dorama')
+                print('5 - Atualizar dorama')
+                print('0 - Voltar ao menu gerenciador de doramas')
+                print('\n----------------------------------\n')
+                opcao = input('Escolha uma opçao: ')
+                
+                if opcao == '1':
+                    self.adicionar_doramas_favoritos()
+                elif opcao == '2':
+                    self.listar_doramas_favoritos()
+                elif opcao == '3':
+                    self.remover_doramas_favoritos()
+                elif opcao == '4':
+                    self.pesquisar_doramas_favoritos()
+                elif opcao == '5':
+                    self.atualizar_doramas_favoritos()
+                else:
+                    print('Voltando para o menu gerenciador de doramas...')
+                    break
+        except Exception as e:
+            print(f'Erro: {str(e)}')
     
 
 ##########################################MENU GERENCIAR DORAMAS ASSISTIDOS#############################################
@@ -517,7 +580,7 @@ class GerenciarDoramas():
                 print('6 - Favoritar dorama assistido')
                 print('0 - Voltar ao menu gerenciador de doramas')
                 print('\n----------------------------------\n')
-                opcao = input('Escolha uma opção: ')
+                opcao = input('Escolha uma opçao: ')
                 
                 if opcao == '1':
                     self.adicionar_doramas_assistidos()
@@ -530,7 +593,7 @@ class GerenciarDoramas():
                 elif opcao == '5':
                     self.atualizar_doramas_assistidos()
                 elif opcao == '6':
-                    self.favoritar_dorama_assistidos()
+                    self.favoritar_doramas_assitidos()
                 elif opcao == '0':
                     print('Voltando para o menu gerenciador de doramas...')
                     break
@@ -547,11 +610,13 @@ class GerenciarDoramas():
                 print('1. Adicionar doramas nao assistidos')
                 print('2. Listar doramas nao assistidos')
                 print('3. Remover dorama nao assistido')
-                print('4. Pesquisar dorama')
-                print('5. Atualizar dorama')
+                print('4. Pesquisar dorama nao assistido')
+                print('5. Atualizar dorama nao assistido')
+                print('6. Favoritar dorama nao assistido')
+                print('7. Assistir dorama nao assistido')
                 print('0 - Voltar ao menu gerenciador de doramas')
                 print('\n----------------------------------\n')
-                opcao = input('Escolha uma opção: ')
+                opcao = input('Escolha uma opçao: ')
                 
                 if opcao == '1':
                     self.adicionar_doramas_nao_assistidos()
@@ -563,6 +628,10 @@ class GerenciarDoramas():
                     self.pesquisar_doramas_nao_assistidos()
                 elif opcao == '5':
                     self.atualizar_doramas_nao_assistidos()
+                elif opcao == '6':
+                    self.favoritar_doramas_nao_assistidos()
+                elif opcao == '7':
+                    self.assistir_doramas_nao_assistidos()
                 elif opcao == '0':
                     print('Voltando para o menu gerenciador de doramas...')
                     break
@@ -580,7 +649,7 @@ class GerenciarDoramas():
                 print('3 - Menu Doramas nao assistidos')
                 print('0 - Voltar ao menu do sistema')
                 
-                opcao = input('Escolha uma opção: ')
+                opcao = input('Escolha uma opçao: ')
 
                 if opcao == '1':
                     self.menu_favoritos()
@@ -609,9 +678,9 @@ class Sistema:
         self._usuario_atual = None  
 
     def cadastrar_usuario(self):
-        usuario_nome = input('Nome do usuario: ')
-        usuario_cpf = input('CPF do usuario: ')
-        usuario_senha = input('Senha do usuario: ')
+        usuario_nome = input('Nome do usuario: ').strip().capitalize()
+        usuario_cpf = input('CPF do usuario: ').strip().upper()
+        usuario_senha = input('Senha do usuario: ').strip().upper()
         if usuario_cpf in self._usuarios:
             print('Usuario ja cadastrado!\n')
         else:
@@ -627,9 +696,9 @@ class Sistema:
             print('---------------------------\n')
 
     def login(self):
-        usuario_nome = input('Nome do usuario: ').strip()
-        usuario_cpf = input('Informe o seu CPF').strip()
-        usuario_senha = input('Senha do usuario: ').strip()
+        usuario_nome = input('Nome do usuario: ').strip().capitalize()
+        usuario_cpf = input('Informe o seu CPF').strip().upper()
+        usuario_senha = input('Senha do usuario: ').strip().upper()
         if usuario_nome in self._usuarios:
             usuario = self._usuarios[usuario_nome]
             if usuario.cpf == usuario_cpf:
@@ -642,7 +711,7 @@ class Sistema:
                 else:
                     print(mensagem)
         else:
-            print('Usuario não encontrado!\n')
+            print('Usuario nao encontrado!\n')
         print('---------------------------------------------\n')
             
     def listar_usuarios(self):
@@ -661,7 +730,7 @@ class Sistema:
                 print('2 - Login')
                 print('3 - Listar Usuarios')
                 print('0 - Sair')
-                opcao = input('Escolha uma opção: ')
+                opcao = input('Escolha uma opçao: ')
                 if opcao == '1':
                     self.cadastrar_usuario()
                 elif opcao == '2':
@@ -672,7 +741,7 @@ class Sistema:
                     print('Saindo...')
                     break
                 else:
-                    print('Opção invalida. Tente novamente.')
+                    print('Opçao invalida. Tente novamente.')
         except Exception as e:
             print(f'Erro: {str(e)}')
 
