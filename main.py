@@ -23,7 +23,7 @@ class IUsuario(abc.ABC):
         pass
 
 class UsuarioPrimario(IUsuario):
-    def __init__(self, nome, cpf, senha) -> None:
+    def __init__(self, nome, cpf, senha):
         super().__init__(nome, cpf, senha)
         
 
@@ -34,7 +34,7 @@ class UsuarioPrimario(IUsuario):
             return False, 'Dados incorretos!'
 
 class UsuarioSecundario(IUsuario):
-    def __init__(self, nome, cpf, senha) -> None:
+    def __init__(self, nome, cpf, senha):
         super().__init__(nome, cpf, senha)
         
     def autenticacao(self, senha):
@@ -54,9 +54,9 @@ class ControleAutenticacao():
             return False, 'Usuario informado nao tem permissao de login!'
         
  
- #####################################################################################################################
- #####################################################CLASSE DORAMA###################################################  
- #####################################################################################################################     
+#####################################################################################################################
+#####################################################CLASSE DORAMA###################################################  
+#####################################################################################################################     
         
 class Dorama:
     def __init__(self, nome, total_eps, nota, emissora, categorias=[]):
@@ -98,16 +98,7 @@ class Dorama:
         if categorias:
             self._categorias = categorias
         print(f'Dorama {self._nome} atualizado com sucesso!')
-
-    def remover_dorama(self):
-        self._nome = None
-        self._nota = None
-        self._emissora = None
-        self._nota = None
-        self._categorias = None
-        
-        
-                
+                              
 class Dorama_Favorito(Dorama):
         
     def __init__(self,nome, total_eps, nota, emissora, categorias=[], motivo=None):
@@ -123,23 +114,20 @@ class Dorama_Favorito(Dorama):
         if motivo:
             self._motivo = motivo
         print(f'Dorama favorita {self._nome} atualizada com sucesso!')
-        
-    
            
 class Doramas_assistidos(Dorama):
     def __init__(self,nome, total_eps, nota, emissora, categorias=[], data_view = None):
         super().__init__(nome, total_eps, nota, emissora, categorias)
-        self._data_fav = data_view
+        self._data_view = data_view
     @property
-    def data_fav(self):
+    def data_view(self):
         return self._data_view
     
     def atualizar_dorama(self, nome=None, total_eps=None, nota=None, emissora=None, categorias=None, data_view=None):
         super().atualizar_dorama(nome, total_eps, nota, emissora, categorias)
         if data_view is not None:
-            self._data_fav = data_view
-    
-              
+            self._data_view = data_view
+                  
 class Dorama_nao_assistidos(Dorama):
     def __init__(self,nome, total_eps, nota, emissora, categorias=[], prioridade = None):
         super().__init__(nome, total_eps, nota, emissora, categorias)
@@ -154,10 +142,10 @@ class Dorama_nao_assistidos(Dorama):
         if prioridade is not None:
             self._prioridade = prioridade
  
+ 
 ######################################################################################################################
 ###############################################CLASSE GERENCIADOR DE DORAMA########################################### 
 ######################################################################################################################  
- 
       
 class GerenciarDoramas():
     def __init__(self):
@@ -250,8 +238,6 @@ class GerenciarDoramas():
                     print('Valor invalido! Tente novamente.')
             
             if dorama_nome in self._doramas_favoritos:
-                dorama = self._doramas_favoritos[dorama_nome]
-                dorama.remover_dorama()
                 del self._doramas_favoritos[dorama_nome]
                 print('Dorama removido com sucesso!\n')
             else:
@@ -332,7 +318,7 @@ class GerenciarDoramas():
             print(f'Emissora = {dados.emissora}')
             for dado in dados.categorias:
                 print(f'Categoria = {dado}')
-            print(f'Data = {dados.data_fav}')
+            print(f'Motivo = {dados.motivo}')
         else:
             print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
         print('\n----------------------------------------\n')
@@ -496,7 +482,7 @@ class GerenciarDoramas():
             print(f'Emissora = {dados.emissora}')
             for dado in dados.categorias:
                 print(f'Categoria = {dado}')
-            print(f'Motivo = {dados.motivo}')
+            print(f'Motivo = {dados.data_view}')
             print('------')
         else:
             print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
@@ -560,13 +546,13 @@ class GerenciarDoramas():
             
             prioridade = input(f'informe a prioridade do dorama: ').capitalize().strip()
             if not prioridade:
-                print('Prioridade invalida! Tente novamente.')
+                print('prioridade invalida! Tente novamente.')
                 prioridade = input(f'informe a prioridade do dorama: ').capitalize().strip()
             
             if nome in self._doramas_nao_assistidos:
                 print(f'Dorama {nome} ja existe no dicionario de nao assistidos!')
             else:
-                novo_dorama = Doramas_assistidos(nome, total_eps, nota, emissora, categorias)
+                novo_dorama = Dorama_nao_assistidos(nome, total_eps, nota, emissora, categorias, prioridade)
                 self._doramas_nao_assistidos[nome] = novo_dorama
                 print(f'Dorama {nome} adicionado aos assistidos.\n')
         else:
@@ -582,7 +568,7 @@ class GerenciarDoramas():
                 print(f'Emissora = {dados.emissora}')
                 for dado in dados.categorias:
                     print(f'Categoria = {dado}')
-                print(f'Prioridade = {dados.prioridade}')
+                print(f'prioridade = {dados.prioridade}')
                 print('------')  
         else:
             print('Nao existem doramas nao assistidos!')  
@@ -685,7 +671,7 @@ class GerenciarDoramas():
             print(f'Nota = {dados.nota}')
             print(f'Emissora = {dados.emissora}')
             for dado in dados.categorias:
-                print(f'{dado}')
+                print(f'Categoria = {dado}')
             print(f'Prioridade = {dados.prioridade}')
         else:
             print(f'Dorama {dorama_pesquisar} nao foi encontrada na lista!')
@@ -841,13 +827,13 @@ class GerenciarDoramas():
     def exibir_menu(self):
         try:
             while True:
-                print('---------------------Menu----------------------\n')
+                print('=====================Menu=====================\n')
                 print('1 - Menu Doramas favoritos')
                 print('2 - Menu Doramas assistidos')
                 print('3 - Menu Doramas nao assistidos')
                 print('0 - Voltar ao menu do sistema')
-                
                 opcao = input('Escolha uma opcao: ')
+                print('==============================================\n')
 
                 if opcao == '1':
                     self.menu_favoritos()
@@ -860,7 +846,6 @@ class GerenciarDoramas():
                     break
         except Exception as e:
             print(f'Erro: {str(e)}')
-
 
 
  #####################################################################################################################
